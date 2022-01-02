@@ -15,20 +15,19 @@
     <title>Bankist</title>
   </head>
   <body>
-    <!-- TOP NAVIGATION -->
+    <!-- NAV -->
     <nav>
-      <p class="welcome">Log in to get started</p>
+      <p class="welcome">Entre na sua conta para iniciar</p>
       <img src="logo.png" alt="Logo" class="logo" />
       <form class="login">
         <input
           type="text"
-          placeholder="user"
+          placeholder="usuário"
           class="login__input login__input--user"
         />
-        <!-- In practice, use type="password" -->
         <input
           type="text"
-          placeholder="PIN"
+          placeholder="senha"
           maxlength="4"
           class="login__input login__input--pin"
         />
@@ -36,13 +35,40 @@
       </form>
     </nav>
 
+    <form class="register register-form">
+      <div class="register register-container">
+        <h1 class="register register-text register-h1">Cadastre-se</h1>
+        <p class="register register-text register-p1">
+          Se já possui login, insira-o acima
+        </p>
+        <input
+          class="register register-input register-input-name"
+          type="text"
+          placeholder="Seu Nome"
+        />
+        <br />
+        <input
+          class="register register-input register-input-pin"
+          type="password"
+          placeholder="Senha"
+        />
+        <br />
+        <button class="register register-button">Registrar</button>
+        <p class="register register-text register-p2">
+          *Seu usuário será as iniciais dos seus dois primeiros nomes <br />
+          Pedro Souza = ps
+        </p>
+      </div>
+      <div class="intro-picture"><img src="digital.jpg" /></div>
+    </form>
+
     <main class="app">
       <!-- BALANCE -->
       <div class="balance">
         <div>
-          <p class="balance__label">Current balance</p>
+          <p class="balance__label">Balança atual</p>
           <p class="balance__date">
-            <span class="date">05/03/2037</span>
+            <span class="date">02/01/2021</span>
           </p>
         </div>
         <p class="balance__value">0000€</p>
@@ -66,13 +92,13 @@
 
       <!-- SUMMARY -->
       <div class="summary">
-        <p class="summary__label">In</p>
+        <p class="summary__label">Depósitos</p>
         <p class="summary__value summary__value--in">0000€</p>
-        <p class="summary__label">Out</p>
+        <p class="summary__label">Retiradas</p>
         <p class="summary__value summary__value--out">0000€</p>
-        <p class="summary__label">Interest</p>
+        <p class="summary__label">Interest*</p>
         <p class="summary__value summary__value--interest">0000€</p>
-        <button class="btn--sort">&downarrow; SORT</button>
+        <button class="btn--sort">&downarrow; DESC</button>
       </div>
 
       <!-- OPERATION: TRANSFERS -->
