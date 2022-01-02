@@ -48,6 +48,7 @@ const account2 = {
 const accounts = [account1, account2];
 
 // Elementos
+const form = document.querySelector('.register-form');
 const labelWelcome = document.querySelector('.welcome');
 const labelDate = document.querySelector('.date');
 const labelBalance = document.querySelector('.balance__value');
@@ -79,9 +80,9 @@ const formatMovementDate = function (date, local) {
 
   const daysPassed = calcDaysPassed(new Date(), date);
 
-  if (daysPassed === 0) return 'Today';
-  if (daysPassed === 1) return 'Yesterday';
-  if (daysPassed <= 7) return `${daysPassed} days ago`;
+  if (daysPassed === 0) return 'Hoje';
+  if (daysPassed === 1) return 'Ontem';
+  if (daysPassed <= 7) return `${daysPassed} dias atrás`;
 
   return new Intl.DateTimeFormat(local).format(date);
 };
@@ -176,7 +177,7 @@ const startLogOutTimer = function () {
     }
     time--;
   };
-  let time = 120;
+  let time = 300;
   tick();
   const timer = setInterval(tick, 1000);
   return timer;
@@ -191,32 +192,42 @@ btnLogin.addEventListener('click', function (e) {
   );
 
   if (currentAccount?.pin === +inputLoginPin.value) {
-    labelWelcome.textContent = `Welcome back, ${
+    form.style.display = 'none';
+    labelWelcome.textContent = `Bem vindo novamente, ${
       currentAccount.owner.split(' ')[0]
     }`;
+
+    // Cria current date e disponibiliza no DOM;
+    const now = new Date();
+    const options = {
+      hour: 'numeric',
+      minute: 'numeric',
+      day: 'numeric',
+      year: 'numeric',
+      month: 'numeric',
+      weekday: 'long',
+    };
+    labelDate.textContent = new Intl.DateTimeFormat(
+      currentAccount.local,
+      options
+    ).format(now);
+
+    inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginPin.blur();
+    if (timer) clearInterval(timer);
+    timer = startLogOutTimer();
+    containerApp.style.opacity = 100;
+    updateUI(currentAccount);
   }
+});
 
-  // Cria current date e disponibiliza no DOM;
-  const now = new Date();
-  const options = {
-    hour: 'numeric',
-    minute: 'numeric',
-    day: 'numeric',
-    year: 'numeric',
-    month: 'numeric',
-    weekday: 'long',
-  };
-  labelDate.textContent = new Intl.DateTimeFormat(
-    currentAccount.local,
-    options
-  ).format(now);
+// Elementos (colocar la em cima depois)
+const btnRegister = document.querySelector('.register-button');
+const nameInput = document.querySelector('.register-input-name');
+const pinInput = document.querySelector('.register-input-pin');
 
-  inputLoginUsername.value = inputLoginPin.value = '';
-  inputLoginPin.blur();
-  if (timer) clearInterval(timer);
-  timer = startLogOutTimer();
-  containerApp.style.opacity = 100;
-  updateUI(currentAccount);
+btnRegister.addEventListener('click', function (e) {
+  e.preventDefault();
 });
 
 btnTransfer.addEventListener('click', function (e) {
@@ -285,10 +296,9 @@ btnClose.addEventListener('click', function (e) {
 let sorted = false; // Mudar a cada clique
 btnSort.addEventListener('click', function (e) {
   e.preventDefault();
-  displayMovements(currentAccount.movements, !sorted);
+  displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 });
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-// LECTURES
