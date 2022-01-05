@@ -32,9 +32,19 @@
           class="login__input login__input--pin"
         />
         <button class="login__btn">&rarr;</button>
+        <div class="logout">
+          <button class="logout-button">Sair</button>
+        </div>
       </form>
     </nav>
-
+    <div class="register register-submit">
+      <h1 class="register register-submit-h1">Cadastro realizado!</h1>
+      <p class="register register-submit-p1">
+        Você foi cadastrado com sucesso, <br />
+        entre com seu login (as iniciais do seus dois primeiros nomes) e senha
+        acima <br />e utilize o melhor banco online!
+      </p>
+    </div>
     <form class="register register-form">
       <div class="register register-container">
         <h1 class="register register-text register-h1">Cadastre-se</h1>
@@ -51,12 +61,17 @@
           class="register register-input register-input-pin"
           type="password"
           placeholder="Senha"
+          maxlength="4"
         />
         <br />
         <button class="register register-button">Registrar</button>
         <p class="register register-text register-p2">
           *Seu usuário será as iniciais dos seus dois primeiros nomes <br />
+          e sua senha pode ter até 4 digitos.
+          <br />
           Pedro Souza = ps
+          <br />
+          senha = 1111
         </p>
       </div>
       <div class="intro-picture"><img src="digital.jpg" /></div>
@@ -130,7 +145,7 @@
           <input type="text" class="form__input form__input--user" />
           <input
             type="password"
-            maxlength="6"
+            maxlength="4"
             class="form__input form__input--pin"
           />
           <button class="form__btn form__btn--close">&rarr;</button>
@@ -138,7 +153,6 @@
           <label class="form__label">Confirm PIN</label>
         </form>
       </div>
-
       <!-- LOGOUT TIMER -->
       <p class="logout-timer">
         You will be logged out in <span class="timer">05:00</span>
