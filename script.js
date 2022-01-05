@@ -5,47 +5,48 @@
 // BANKIST APP
 
 // Data
-const account1 = {
-  owner: 'Jonas Schmedtmann',
-  movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
-  interestRate: 1.2,
-  pin: 1111,
+const database = {
+  account1: {
+    owner: 'Jonas Schmedtmann',
+    movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
+    interestRate: 1.2,
+    pin: 1111,
 
-  movementsDates: [
-    '2019-11-18T21:31:17.178Z',
-    '2019-12-23T07:42:02.383Z',
-    '2020-01-28T09:15:04.904Z',
-    '2020-04-01T10:17:24.185Z',
-    '2020-05-08T14:11:59.604Z',
-    '2020-05-27T17:01:17.194Z',
-    '2020-07-11T23:36:17.929Z',
-    '2021-12-31T10:51:36.790Z',
-  ],
-  currency: 'EUR',
-  local: 'pt-PT', // de-DE
+    movementsDates: [
+      '2019-11-18T21:31:17.178Z',
+      '2019-12-23T07:42:02.383Z',
+      '2020-01-28T09:15:04.904Z',
+      '2020-04-01T10:17:24.185Z',
+      '2020-05-08T14:11:59.604Z',
+      '2020-05-27T17:01:17.194Z',
+      '2020-07-11T23:36:17.929Z',
+      '2021-12-31T10:51:36.790Z',
+    ],
+    currency: 'EUR',
+    local: navigator.language,
+  },
+  account2: {
+    owner: 'Jessica Davis',
+    movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
+    interestRate: 1.5,
+    pin: 2222,
+
+    movementsDates: [
+      '2019-11-01T13:15:33.035Z',
+      '2019-11-30T09:48:16.867Z',
+      '2019-12-25T06:04:23.907Z',
+      '2020-01-25T14:18:46.235Z',
+      '2020-02-05T16:33:06.386Z',
+      '2020-04-10T14:43:26.374Z',
+      '2020-06-25T18:49:59.371Z',
+      '2020-07-26T12:01:20.894Z',
+    ],
+    currency: 'USD',
+    local: 'en-US',
+  },
 };
 
-const account2 = {
-  owner: 'Jessica Davis',
-  movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
-  interestRate: 1.5,
-  pin: 2222,
-
-  movementsDates: [
-    '2019-11-01T13:15:33.035Z',
-    '2019-11-30T09:48:16.867Z',
-    '2019-12-25T06:04:23.907Z',
-    '2020-01-25T14:18:46.235Z',
-    '2020-02-05T16:33:06.386Z',
-    '2020-04-10T14:43:26.374Z',
-    '2020-06-25T18:49:59.371Z',
-    '2020-07-26T12:01:20.894Z',
-  ],
-  currency: 'USD',
-  local: 'en-US',
-};
-
-const accounts = [account1, account2];
+const accounts = [database.account1, database.account2];
 
 // Elementos
 const form = document.querySelector('.register-form');
@@ -72,7 +73,13 @@ const inputTransferTo = document.querySelector('.form__input--to');
 const inputTransferAmount = document.querySelector('.form__input--amount');
 const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
-const inputClosePin = document.querySelector('.form__input--pin');
+let inputClosePin = document.querySelector('.form__input--pin');
+
+const btnRegister = document.querySelector('.register-button');
+const nameInput = document.querySelector('.register-input-name');
+const pinInput = document.querySelector('.register-input-pin');
+const registerSubmit = document.querySelector('.register-submit');
+const logInDiv = document.querySelector('.login');
 
 const formatMovementDate = function (date, local) {
   const calcDaysPassed = (date1, date2) =>
@@ -185,7 +192,7 @@ const startLogOutTimer = function () {
 
 let currentAccount, timer;
 
-btnLogin.addEventListener('click', function (e) {
+const logIn = function (e) {
   e.preventDefault();
   currentAccount = accounts.find(
     acc => acc.username === inputLoginUsername.value
@@ -193,6 +200,8 @@ btnLogin.addEventListener('click', function (e) {
 
   if (currentAccount?.pin === +inputLoginPin.value) {
     form.style.display = 'none';
+    registerSubmit.style.display = 'none';
+    logInDiv.style.display = 'initial';
     labelWelcome.textContent = `Bem vindo novamente, ${
       currentAccount.owner.split(' ')[0]
     }`;
@@ -219,15 +228,35 @@ btnLogin.addEventListener('click', function (e) {
     containerApp.style.opacity = 100;
     updateUI(currentAccount);
   }
-});
+};
 
-// Elementos (colocar la em cima depois)
-const btnRegister = document.querySelector('.register-button');
-const nameInput = document.querySelector('.register-input-name');
-const pinInput = document.querySelector('.register-input-pin');
+btnLogin.addEventListener('click', logIn);
 
 btnRegister.addEventListener('click', function (e) {
   e.preventDefault();
+  const name = nameInput.value;
+  const pin = pinInput.value;
+  if (!name || !pin) return;
+  database[`account${accounts.length + 1}`] = {
+    owner: name,
+    movements: [200, 250, -642.21, -133.9, 79.97, 1300],
+    interestRate: Math.floor(Math.random() * 2 + 1),
+    pin: +pin,
+    movementsDates: [
+      '2019-11-18T21:31:17.178Z',
+      '2019-12-23T07:42:02.383Z',
+      '2020-01-28T09:15:04.904Z',
+      '2020-04-01T10:17:24.185Z',
+      '2022-02-04T14:11:59.604Z',
+      '2021-12-31T10:51:36.790Z',
+    ],
+    currency: 'BRL',
+    local: 'pt-PT',
+  };
+  form.style.display = 'none';
+  registerSubmit.style.opacity = 1;
+  accounts.push(database[`account${accounts.length + 1}`]);
+  createUsername(accounts);
 });
 
 btnTransfer.addEventListener('click', function (e) {
@@ -284,10 +313,13 @@ btnClose.addEventListener('click', function (e) {
 
     // Deletar a conta
     accounts.splice(index, 1);
-
+    delete database[`account${index + 1}`];
     // Esconder o UI
+    logInDiv.style.opacity = 1;
     containerApp.style.opacity = 0;
-
+    form.style.display = 'initial';
+    labelWelcome.textContent = 'Entre na sua conta para iniciar';
+    register;
     inputCloseUsername.value = inputClosePin = '';
   }
 });
